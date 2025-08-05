@@ -11,12 +11,12 @@ import hashlib
 
 # === CONFIG ===
 START_URL = "https://myrealestate.in"
-MAX_PAGES = 2500
+MAX_PAGES = 1500  # Reduced from 2500
 REQUEST_DELAY = 0.5  # seconds between requests
 MAX_CHARS = 5000
 
 # === STEP 1: SMART CRAWLER ===
-def crawl_site(start_url, max_pages=2500):
+def crawl_site(start_url, max_pages=MAX_PAGES):
     visited = set()
     to_visit = [start_url]
     docs = []
@@ -46,7 +46,6 @@ def crawl_site(start_url, max_pages=2500):
             visited.add(url)
             seen_hashes.add(content_hash)
 
-            # Find internal links
             for link in soup.find_all("a", href=True):
                 full_url = urljoin(url, link["href"])
                 parsed = urlparse(full_url)
@@ -105,4 +104,4 @@ if __name__ == "__main__":
     docs = crawl_site(START_URL, max_pages=MAX_PAGES)
     embed_and_store(docs)
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=10000)
